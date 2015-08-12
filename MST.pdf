@@ -1,0 +1,596 @@
+Spanning Trees
+By: Shriya Mishra
+Abstract
+The Minimum Spanning Tree is one of the oldest and one of the
+most basic graph problems in theoretical Computer Science.Extensive
+researches on the Minimum spanning tree problems had started way
+back in the 1920's and till today Minimum Spanning Tree problems
+form the most important areas of research in the eld of Computer
+Science. MSTs have direct applications in the designing of Computer
+networks, telecommunication networks, transportation networks, wa-
+ter supply networks etc., and recent breakthroughs have been made
+in the networking of wireless sensors. To serve for the requirements
+and to improve the performance of these algorithms in its applications
+many forms of restrictions can be made to the Minimum spanning tree
+problem. The Bounded Degree Minimum Spanning tree(BDMST) and
+the Minimum Leaf Spanning Tree(Min-LST) are two of the many re-
+strictions that have been discussed in this paper. In this paper al-
+gorithms for the Minimum Spanning Tree as well as the algorithms
+for the BDMST and the Min-LST (that give a near optimal solution)
+have been illustrated.
+Introduction
+Let us consider a telephone company that wants to connect a group of n
+cities fv1; v1; : : : ; vng. Let c(vi; vj) be the cost of laying cables between a pair
+of cities vi and vj . The company should connect each of the cities in such a
+way that there every city vi can communicate with every other city vj .
+The company can establish a connection between cities in many ways. To
+establish a connection between cities the company can connect each city every
+other city, for such a case, if there are n cities there will be n(n􀀀1)
+2 connections
+and this is the maximum number of connections possible. Let us take another
+case where the company can connect the cities with (n􀀀1) connections and
+this is the minimum number of connections that are required to connect n
+cities. Obviously, the company would choose the second option as it is cost
+eective and the company would have to spend an amount that is much lesser
+than amount that would be spent when there are n(n􀀀1)
+2 connections.
+1
+In Graph Theory, the problem can be viewed as a graph with n vertices
+and all the vertices in the graph have to be connected. The vertices v of
+the graph G represent the cities the edges e represent the cable connections
+between cities. The cost of laying a cable is represented by the cost of each
+edge c. The n vertices fv1; v1; : : : ; vng are connected by n􀀀1 edges and such
+a graph is called a tree more precisely, A Spanning Tree.
+Tree
+A graph G = (V;E) is called a tree if it is connected and is acyclic. The
+following theorem gives a characterization of a tree.
+Theorem 1. [?] A graph G = (V;E) is called a tree if and only if
+(a) It has jV j 􀀀 1 edges.
+(b) G = (V;E) is connected and jEj = jV j 􀀀 1.
+(c) G = (V;E) is acyclic and jEj = jV j 􀀀 1.
+(d) Every edge in the graph is a cut- edge.
+(e) V [ feg always forms only one cycle 8e =2 E
+Spanning Tree
+Given a connected graph G = (V;E), a subgraph T = (V 0;E0) is called a
+spanning tree of G if T is acyclic, connected and V = V 0. Here, V represents
+the set of all vertices and E represents a set of all edges in G.
+Minimum Spanning Tree :
+Let us again consider the problem discussed earlier. The company reduces
+the total expenditure on the connections by choosing (n 􀀀 1) connections.
+The expenditure can be further reduced by choosing those (n 􀀀 1) edges
+that have minimum cost. A spanning tree with minimum cost is called a
+minimum spanning tree. More formally, given a graph G = (V;E) and
+an edge weight function c : E ! R+, in minimum spanning tree problem,
+it is required to nd a spanning tree T = (V;ET ) of G with minimum total
+edge weight c(T) =
+P
+e2ET
+c(e).
+2
+Theorem 2. Let G = (V;E) be a connected graph with edge weight function
+c : E ! R+. Let T be a spanning tree of G. Then the following statements
+are equivalent.
+(a) T is a minimum spanning tree.
+(b) If e = (x; y) 2 E(G) 􀀀 E(T) no edge in the path of (x; y) has greater
+cost than e.
+(c) If e 2 E(T) then e is the edge with the minimum weight among all the
+edges (V (c)) where C is the connecting component and (V (C)) is the
+set of all the edges in the cut set.
+Algorithms for minimum spanning tree
+There are two algorithms that are used to nd out the the minimum spanning
+tree of a given graph G = (V;E), they are Kruskal's algorithm and Prim's
+algorithm. Kruskal's algorithm is based on the Theorem 1(b), and Prims
+algorithm is based on Theorem 1(c). Kruskal's algorithm starts from the
+graph without any edge and includes an edge at a time of least cost, step by
+step, while maitaining the acyclicity property. Whereas, Prim's algorithm
+starts from a graph without any edge and expands one particular acyclic
+component by including one edge at a time of minimum cost. The pseudocode
+of these two algorithms are described as given bellow.
+3
+Kruskal's Algorithm
+Algorithm 1: The Kruskal's Algorithm
+Input: An undirected graph G = (V;E);
+Output: Minimum Spanning Tree;
+Sort the edges of G in a non-decreasing order;
+Let this order be e1; e2; : : : ; ejEj;
+ET = ;
+for i = 1 to jEj do
+if (ET [ feg) is acyclic then
+ET = ET [ feg;
+end
+end
+return (T = (V;ET )
+Time complexity of Kruskal's algorithm
+1. Sorting the edges in an increasing order of their weights can be done
+in O(E log V ) time.
+2. Checking for the acyclicity of the tree can be done by using BFS
+(Breadth First Search) or DFS(Depth First search) which takes O(E)
+time. The Loop runs for O(V ) time, hence the total time complexity
+is O(EV ).
+The Time Complexity of Kruskal's is = O(E log V ) + O(EV ) )
+O(EV ).
+Improving the time complexity
+The time complexity of the Kruskal's algorithm can be improved using the
+Union-Find Data Structure. In this data structure the vertices of the
+tree are arranged in a data structure known as a linked list. The following
+operations are used :
+1. Find-set(x) : This operation returns a pointer to the representative
+containing x.
+2. Union(x,y) : This operation appends the list x to the list y.
+4
+Algorithm Analysis with the above data structure :
+1. Sorting the edges in an increasing order of their weights can be done
+in O(E log V ) time by using a sorting algorithm(Eg: Merge Sort).
+2. Let us assume two trees x,y. The Union(x,y) function appends the
+list of x to y.To reduce the number of changes made to the pointers of
+each list, we append the list with the smaller length to the list with
+larger length. Now we analyse the changes:
+Changes size(minimum length after appending)
+1 2
+2 4
+3 8
+...
+...
+log V V
+Explanation : Let us consider a list l1 and l2 where length of l1  l2,
+the minimum length of each of the lists should be atleast 1. When
+we combine the two lists using the Union(x,y) the length of the list
+becomes atleast 2. When the new list is combined with another list the
+length becomes atleast 4, if this list is further combined with another
+list, the length becomes atleast 8. This procedure is continued till the
+length of the nal list becomes V (indicating that all the vertices are
+covered).The length of the list becomes V after a minimum of log V
+combinations.
+The above Analysis is called Amortised Analysis.
+So the total number of changes made by the Union(x,y) is O(log V ).
+The Find-set(x) takes constant time.As the For loop runs for E times,
+the total time taken by the loop will be O(E log V ).
+The Time Complexity of Kruskal's is =O(E log V ) + O(E log V ) )
+O(E log V ).
+5
+Correctness of Kruskal's Algorithm
+Let us consider a graph G with T as its minimum spanning tree obtained
+by applying the Kruskal's Algorithm to the graph G. In the Kruskal's Al-
+gorithm a spanning tree is built by adding one edge at a time. Let us say
+that the edges of T were added in the order of fe1; e2; e3 : : : en􀀀1g. Sup-
+pose T is not a minimum spanning tree instead we choose T to be a min-
+imum spanning tree that follows T for the longest time. T has the edges
+fe1; e2; e3 : : : ekgwherek < n􀀀1 ( we assume that no minimum spanning tree
+has all the edges fe1; e2; e3 : : : ek+1g ).
+We add an edge ek+1 to T.T + ek+1 denitely produces a cycle C, but
+the spanning tree T does not have a cycle, it means that there exists some
+edge e0 that does not exist in T, moreover, as T is being constructed us-
+ing the Kruskal's Algorithm the weights of e0 and ek+1 are compared and
+we nd that c(e0) > c(ek+1). This means that T + ek+1 􀀀 e0 has weight
+that is lesser that T with the edges fe1; e2; e3 : : : ek+1g which is a contra-
+diction to the assumption that no minimum spanning tree has all the edges
+fe1; e2; e3 : : : ek+1g. Therefore T has to be a minimum spanning tree.
+Prim's Algorithm
+Algorithm 2: Prim's Algorithm
+Input: An undirected graph G = (V;E)
+Output: Minimum Spanning Tree
+Select a vertex v 2 V ;
+ET = ;
+P = fvg;
+while P 6= V do
+select an edge e = (r; s) with r 2 P, s 2 V 􀀀 P and, e of minimum
+cost
+then update P = P [ fsg;
+ET = ET [ feg;
+end
+return (T = (V;ET )
+6
+Time complexity
+For Prim's Algorithm we use a data structure called a Heap. The Heap is
+actually an array and can be viewed as an almost complete binary tree, in
+other words, every element in an array corresponds to a node in the heap.
+To construct a tree using the Prim's Algorithm we use two operations of
+the Heap data structure.
+1. Build-Min-Heap : This operation is used to include the vertices that
+form an edge in the minimum Spanning tree, in the Heap array.
+2. Extract-Min : This operation is used to nd out the vertex of the
+light edge incident by another vertex in the cut-set.
+Analysis :
+1. Initialising takes constant time.
+2. Building a max heap using the Build-Min-Heap operation (to con-
+struct P), takes O(E log V ) time .
+3. Searching for the vertex of the light edge incident by a vertex in P this is
+done by the operation Extract-Min ,this operation takes O(log V ).
+As the loop runs for jV j 􀀀 1 = E times the total running time is
+O(E log V ).
+The Time Complexity of Prim's Algorithm is =O(E log V ).
+Correctness of Prim's algorithm
+The correctness of the algorithm can be proven by the Theorem 2 (c).The
+loop ensures that the edge chosen is the minimum of all the edges incident
+by the vertices in the set P. As vertices are being chosen from the sets P
+and V 􀀀 P no cycles will be formed.Hence, the output of the algorithm is a
+minimum spanning tree.
+Linear program for the Minimum spanning tree
+problem
+Let ET be the edges of the minimum spanning tree T of graph G = (V;E)
+and let X be the characteristics vector such that X = fx1; x2; x3; : : :g.
+7
+If xe = 1 ! the edge is a part of the minimum spanning tree.
+If xe = 0 ! the edge is not a part of the minimum spanning tree.
+Then the linear programming formulation of the minimum spanning tree
+would be ,
+Minimize
+X
+e2E
+cexe
+Subject to
+X
+e2E
+xe(E(V )) = n 􀀀 1 (1)
+X
+e2E(S)
+xe(E(S))  jSj 􀀀 1; 8S  V (2)
+xe 2 f0; 1g 8e 2 E (3)
+Explanation :
+1. Inequality (1) implies that there are exactly (n 􀀀 1) edges.
+2. If S is spanning tree subgraph such that S  V; S 6= (i.e., S has
+atleast one vertex) then E(S) consists of all those edges that have both
+the end points in S. The Inequality (2) eliminates all the simple cycles
+formed within the subset S by ensuring that number of edges in S is
+less than jSj.
+8
+MST Algorithm using LP :
+Algorithm 3: Algorithm for MST using LP
+Input: An undirected graph G = (V;E)
+Output: Minimum Spanning Tree
+Initialise F = ;
+while V (G) 6=  do
+Compute the optimal solution x, for the graph G using the
+LP-MST.;
+if xe = 0 then
+Eliminate the edge e.
+end
+else
+Choose that edge e = (u; v) where the deg(v) is at most 1.;
+Update,F = F [ feg and G = G 􀀀 fvg.
+end
+end
+return F
+Explanation :
+We choose a set F that will contain all the edges that form a part of the
+MST and we gradually decrease the vertices of the graph G on the addition
+of every edge to F. To add an edge to F, we compute its optimal solution
+xe for the graph G using the LP-MST. If xe = 0 the edge is ignored, else we
+add e to the set F.
+Bounded Degree Minimum Spanning Tree
+So far we have dealt with the the Minimum Spanning Tree where, for a given
+graph G = (V;E) we nd a path of minimum cost.
+In the Bounded Degree Minimum Spanning Tree, apart from nding the
+minimum spanning tree we add restrictions to the number of edges that are
+to be incident by each vertex, in simpler words, we restrict the degree of each
+vertex by k, where k is the maximum degree of the vertex v of graph G.
+We dene a Bounded degree Minimum Spanning Tree as an undi-
+rected graph G = (V;E) with ce as the cost of each edge and Bv; 8v 2 V
+where Bv is the bounded degree of each vertex such that, deg(v)  Bv; 8v 2
+9
+V , i.e., the degree of each vertex should be at most Bv.
+Linear Program for the Bounded Degree MST
+[?]
+Let ET be the edges of the minimum spanning tree in graph G = (V;E)
+and let X be the characteristics vector such that X = fx1; x2; x3; : : :g.
+if xe > 0 ! the edge is a part of the minimum spanning tree.
+if xe = 0 ! the edge is not a part of the minimum spanning tree.
+Let, the bounded degree be Bv.
+For the LP of the Bounded Degree Minimum Spanning tree, we just add
+the degree constraint to the LP of the Minimum spanning Tree Problem dis-
+cussed earlier.
+Minimize
+X
+e2E
+cexe
+Subject to
+X
+e2E(V )
+xe(E(V )) = n 􀀀 1 (4)
+X
+e2E(S)
+xe(E(S))  jSj 􀀀 1; 8S  V (5)
+X
+e2(v)
+xe  Bv; 8v 2 W (6)
+0  xe  1 8e 2 E: (7)
+We assume that the set W  V contains all the vertices that have a degree
+bound. We will see later that once W =  there are no degree constrains
+then the whole algorithm is like that of a minimum spanning tree.
+10
+BD- MST algorithm using LP
+Algorithm 4: Algorithm for Bounded Degree-MST using LP
+Input: An undirected graph G = (V;E)
+Output: A Spanning Tree with bounded degree Bv + 2
+Initialise F = .;
+while V (G) 6=  do
+Compute the optimal solution x for an edge e in for the graph G
+using the LP- BDMST.;
+if xe = 0 then
+the edge e is eliminated.
+end
+if there is a vertex v of the edge e = (u; v) such that deg(v) = 1
+then
+we add the edge e to the set F and update F = F [ feg ,
+G = G 􀀀 fvg, W = W 􀀀 fvg and Bv = Bv 􀀀 1.
+end
+if there is a vertex degree  3 then
+Remove the vertex, Update W = W 􀀀 fvg and Bv = Bv 􀀀 1.
+end
+end
+return F.
+Explanation :
+We nd the optimum solution xe for every edge in the graph G. For the
+BDMST, the optimal solution xe is always greater than 0 and need not be
+one for all the edges. If xe = 0 we simply eliminate that edge. If the degree
+of a vertex is 1 we add it to the set F and this forms the leaf node for the
+spanning tree. When the value of xe lies between 0 and 1, it is an observation
+that the degree of the vertex is at most 3 (i.e., deg(v)  3).When we nd
+such a vertex v with at most three edges incident at it we remove the degree
+constraint on v by removing the vertex from the set W. Once the vertex
+v is removed all the edges incident on v are included in the set F. In this
+process, the constraint Bv = k is violated. In the worst case if Bv = 1 then
+the violation of the degree is at most 2.
+So, we can conclude that a polynomial time algorithm for a BDMST
+produces a spanning tree with a bounded degree of Bv + 2. The solution
+produced by the algorithm has a cost almost equal to the cost of the minimum
+11
+spanning tree that follows the degree constraint, this can be proved by the
+A+2 approximation algorithm.The above conclusion has been formulated as
+a theorem by Goemans which can be illustrated as:
+Theorem 3. There exists a polynomial time algorithm for the Bounded De-
+gree Minimum Spanning Tree problem that returns a spanning tree T such
+that the cost of T, c(T)  opt and degree(v)  Bv +2 for each vertex v 2 V ,
+where opt is the cost of the optimal solution satisfying all degree bounds ex-
+actly.
+Minimum Spanning tree with restricted num-
+ber of leaves
+In the previous section, we came across the Bounded Degree Minimum Span-
+ning Tree where restrictions were made to the degree of each node i.e., we
+made restrictions on the number of vertices that can be adjacent to each
+vertex V of the Graph G = (V;E). In this section we will be restricting the
+number of leaf nodes of a Graph G.
+Designing an algorithm with maximum number of in-
+ternal nodes
+Decreasing the number of leaf nodes is equivalent to increasing the number of
+internal nodes.Hence, designing an algorithm to nd out the maximum num-
+ber of internal nodes would eventually give us a spanning tree with minimum
+number of leaf nodes.
+Before designing the algorithm we will rst make a clear picture of the
+Depth First Search (DFS). Depth-rst search (DFS) is an algorithm for
+traversing or searching a tree or a graph data structure. One starts at the
+root( let the root be r ), selecting any node and explores as far as possible
+along each branch before backtracking. The DFS visits each and every node,
+thus we get a spanning tree, say T.
+Now, let us analyse the spanning tree T that was obtained as a result
+of the DFS. There are nodes that do not have any children, such nodes are
+called d-leaves. If the root r is a leaf, then it is not considered to be a d-leaf.
+The tree T of a DFS gives rise to two cases :
+12
+Case 1: if the r is not a leaf node then the set of d-leaves obtained, form an
+independent set of leaves of the graph G.
+Case 2: If r is a leaf then there may be a possibility that r is adjacent to another
+leaf node l.
+We design our algorithm based on the above observations. If we obtain
+a DFS that satises Case:1, we have already obtained a spanning tree with
+independent leaves, so we cannot reduce number of leaves of the tree further.
+If we obtain a tree that satises Case:2, it implies that the tree has to be
+restructured to produce a set of independent leaves. From the algorithm
+illustrated below, we nd out a spanning tree with independent leaves and
+we will further prove that the algorithm gives a solution that is closer to the
+optimal solution.
+Algorithm
+Algorithm 5: Algorithm for the ILST
+Input: An undirected graph G = (V;E)
+Output: A Spanning Tree T with independent leaves
+Choose any arbitrary node and perform DFS;
+Initialise T= DFS(G);
+Let r be the root of T ;
+if deg(r) = 1 and l be a leaf node such that (r; l) 2 E(G) then
+Choose the nearest branching node from l, let that node be x;
+Choose the nearest node from x in the path of (x; l), let that node
+be y;
+Connect (r; l);
+Disconnect (x; y);
+Add (r; l) to T;
+end
+return T.
+The Max-IST produces a spanning tree with maximum number of internal
+nodes (which in turn gives us the spanning tree with minimum number of leaf
+nodes) but the tree T obtained may or may not be the optimal solution to our
+problem. This is because we use the the depth rst search algorithm which
+arbitrarily selects a node and starts exploring all the nodes that ultimately
+13
+gives us a spanning tree.The spanning tree obtained may or may not be a tree
+with minimum leaves from all the possible trees of the graph G. Hence, T
+may or may not be an optimal solution to our problem but we can prove that
+the optimality of the tree T produced by Max-IST is closer to the optimal
+solution to the tree T (here we assume that T is the optimal solution) which
+would be produced by an algorithm for Min-LST. The above statement has
+been formulated as a Theorem and before we proceed to prove the statement
+it is important to have an idea about some properties of a graph that are
+discussed below.
+Cut-Asymmetry : Cut Asymmetry ca of a graph G is dened as
+ca(G) = maxXV;X6=(compG(X) 􀀀 compG(V 􀀀X)) where compG(X) repre-
+sents the connected components of G in set X.
+Lemma 1. Let T be a tree of the graph G with a minimum of three vertices
+then, ca(T) = jV1(T)j 􀀀 1 where,jV1(T)j is the number of degree 1 vertices.
+Proof :
+The proof of the lemma consists of two parts:
+(a) Proving ca(T)  jV1(T)j 􀀀 1
+compT (V1(T)) 􀀀 compT (V 􀀀 V1(T)) = jV1(T)j 􀀀 jV 􀀀 V1(T)j (8)
+if V1(T) is an independent set of leaves of T then jV 􀀀 V1(T)j spans a
+single sub tree. Hence,jV1(T)j 􀀀 jV 􀀀 V1(T)j = jV1(T)j 􀀀 1
+ca(T)  compT (V1(T)) 􀀀 compT (V 􀀀 V1(T))
+= jV1(T)j 􀀀 1
+(b) Proving ca(T)  jV1(T)j􀀀1 let X  V ca(T) = compT (X)􀀀compT (V 􀀀
+X). Let x = compT (X), x0 = compT (V 􀀀 X) and d(T)= degree of the
+tree T. Let eT (X) = jXj 􀀀 x and eT (V 􀀀 X) = n 􀀀 jXj 􀀀 x0,where n=
+number of vertices and eT (x) represents the number of edges of X in
+the tree T.
+dT (X) = 2eT (X) + eT (X; V 􀀀 X)
+= 2eT (X) + n 􀀀 1 􀀀 (eT (X) + eT (V 􀀀 X)
+= 2(jXj 􀀀 x) + n 􀀀 1 􀀀 (jXj 􀀀 x + n 􀀀 jXj 􀀀 x0)
+= 2(jXj) 􀀀 x + x0 􀀀 1 (9)
+14
+We can observe that every Internal node makes a contribution of atleast
+2 to dT (X). The total contribution of the internal node can be formu-
+lated as: 2jXj􀀀jV1(T)\Xj. This is denitely lesser than dT (X). Based
+on this we can derive :
+dT (X)  2jXj 􀀀 jV1(T) \ Xj
+jV1(T) \ Xj  2jXj 􀀀 dT (X)
+jV1(T)j  2jXj 􀀀 dT (X)
+but from eqn(2), 2jXj 􀀀 dT (X) = x 􀀀 x0 + 1
+jV1(T)j  2jXj 􀀀 dT (X)
+ x 􀀀 x0 + 1
+ compT (X) 􀀀 compT (X) + 1
+ ca(T) + 1
+Thus, the above lemma is proved.
+Theorem 4. The algorithm ILST is a 2-Approximation of Max-LST.
+Proof: Let T be an optimal spanning tree with maximum number of in-
+ternal nodes. Let T be the tree given by the Max-LST. We use Lemma 1 to
+prove the Theorem 4.
+jV1(T)j = ca(T) + 1
+ compT(V1(T)) 􀀀 (compT(V 􀀀 V1(T)) + 1
+ jV1(T)j 􀀀 jV 􀀀 V1(T)j + 1
+ 2jV1(T)j 􀀀 n + 1
+The above equation is true because V1(T) is an independent set.
+jV2(T)j = n 􀀀 jV1(T)j
+ n 􀀀 2jV1(T)j + n 􀀀 1
+= 2(n 􀀀 jV1(T)j) 􀀀 1
+ 2(n 􀀀 jV1(T)j)
+= 2jV2(T)j
+15
+From the above equation we can conclude V2(T)
+V2(T) = 2 and this proves the
+Theorem 4
+Applications of the Minimum Spanning Tree
+The MST is the most important and the most commonly used algorithms
+in the design and conguration of a network. Of late, the MST nds its
+application in the Ad hoc Network or simply the MANET.
+A MANET is a self- conguring, infrastructureless wireless network in
+which the participating devices are allowed to move independently in any
+direction. In such a network of randomness the MSTs give an optimal data
+centric routing. Let us consider a case where an Ad hoc network consists of
+a large number of battery-powered sensors, where the sensors are distributed
+across a region. Large amounts of data packets are exchanged between each
+of these sensors and the data is transferred at the cost of the energy of these
+sensors. So, sending large amounts of data with limited power is a challenge.
+Another challenging aspect of the MANET is its randomness in topology
+because the devices are mobile. This randomness causes frequent change in
+paths and routes between devices which increases the possibility of the loss
+of data packets.
+The Minimum Spanning Tree eliminates most of the problems discussed
+above. It increases the routing eciency and reduces the energy consumed.
+The MSTs allow point-to-point conguration and communication which re-
+duces the loss of data packets. A dedicated link between the devices allows
+peer-to-peer message transfer and this almost eliminates trac caused due
+to data congestion. Broadcasting and data aggregation is very ecient as it
+eliminates data redundancy. It helps in easy fault detection and recongu-
+ration of a connection as Ad hoc networks are prone to such faults.
+The creation of the MST is done locally (because every device is in ran-
+dom motion) by a simple algorithm known as the Nearest Neighbour Tree
+Algorithm. It creates a Minimum Spanning Tree in an Ad hoc setting. The
+Edge Disjoint Minimum Spanning Tree protocol is used in the MANET which
+chooses a link with optimum stability just the same way the Prim's algorithm
+chooses an edge with minimum weight.
+16
+Complexity of problems
+Introduction
+We have an idea about various computational problems like the sorting algo-
+rithms, the minimum spanning tree etc.These computational problems can
+be solved, they have their own algorithms that solve the problem within a
+given limited time. Apart from these problems there are many others that
+cannot be solved even with a given unlimited time for eg.Turing Halting
+problem (Given a program and an input, whether the program will eventu-
+ally halt when run with that input, or will run forever). There are another
+set of problems that can be solved but they do not have an algorithm dened
+till date. Based on how these problems can be solved and whether or not
+they can be solved in polynomial time these problems are broadly classied
+into the P class and the NP class.
+The P class
+The P class is a set of problems that can be solved in polynomial time.More
+formally, they are the problems that can be solved within O(nk) where k is
+some constant and n is the size of the input. These problems can be solved
+by a deterministic Turing Machine.
+The NP class
+[?] The NP class is a set of problems that cannot be solved in polynomial
+time but can be veried within polynomial time. This means that for a given
+certicate we can determine whether the certicate satises the problem
+within a polynomial time.
+The problems in this class can be solved by algorithms that can make a
+right guess, and such algorithms are very hard to design.
+These problems are considered to be solved only by a non-deterministic
+Turing machine.
+Reduction
+Two language L1 and L2are said to be polynomial-time reducible , in
+other words L1 reducible to L2if there exists a function f(x) for all x, and
+17
+x 2 L1 if and only if f(x) belongs to L2.
+Theorem 5. If L1 6= L2 and if L2 2 P then L1 2 P.
+Proof :
+Let us consider that A1 solves L1, A2 solves L2 where A1 and A2 are al-
+gorithms for languages L1 and L2 respectively. The F be the reduction
+algorithm that computes the reduction function f.
+When we use the algorithm A1, it takes x as the input. Then the re-
+duction function F is used to compute the reduction function f(x) which is
+given as an input to the algorithm A2.
+if, A2 gives a yes, f(x) 2 L2 ! x 2 L1. So the overall output of A1 is true.
+else, A2 gives a no, f(x) =2 L2 ! x =2 L1. So the overall output of A1 is false.
+Correctness : A1 runs in polynomial time because both F and A2 run in
+polynomial time.
+NP-completeness
+A Language L is said to be NP-complete if
+1. L 2 NP.
+2. L0 p L for all L0 2 NP.
+Problems which satises only property 2 are said to be NP-hard.
+Hamiltonian path
+A Hamiltonian path is a path in an undirected graph G = (V;E) that visits
+each vertex exactly once.
+Theorem 6. A Hamiltonian path for a graph G = (V;E) is NP- complete.
+NP-completeness of a Bounded Degree Spanning tree
+Theorem 7. The Bounded Degree Minimum Spanning Tree is NP hard.
+18
+Proof: Let us consider a Bounded Degree Minimum Spanning Tree which
+satises the constraint deg(v)  k; 8v 2 V . Let us consider a case where
+k = 2, which means that the vertices in graph G = (V;E) have a maximum
+degree of 2. To prevent the formation of cycles there must be exactly 2
+vertices with degree at most 1.
+The above problem is equivalent to the problem of searching a Hamil-
+tonian Path in a graph G. As the Hamiltonian Path reduces to the above
+problem, we can conclude that the Bounded Degree Minimum Spanning tree
+is NP- hard(as the Hamiltonian path is NP-hard).
+In the earlier sections we have found a polytime algorithm which nd a
+(k + 2)-bounded spanning tree if a k-bounded spanning tree exists and the
+cost of the spanning tree is close to the cost of the MST with bounded degree
+exactly k.
+NP-completeness of a Minimum leaf spanning tree
+Theorem 8. The Minimum Leaf Spanning tree is NP-Complete.
+Proof:
+Let us consider a Spanning tree T of graph G with a maximum of two
+leaves(this is the minimum number of leaf nodes possible for a tree). This
+implies that all the other nodes form the internal nodes of the spanning tree.
+If we construct a path between the two leaf nodes, it will cover all the the
+nodes of the graph G, thus forming a Hamiltonian Path.As the Hamiltonian
+path can be reduced to the the problem discussed above we can say that the
+Minimum Leaf Spanning Tree is NP-complete because the Hamiltonian path
+is NP-complete according to Theorem 6.
+Conclusion and Future Work:
+In this paper we have discussed about MST, BDMST and the Min-LST.
+The MST for a Graph G is given by the Prim's and Kruskal's Algorithm
+and these algorithms are polynomial time solvable. We have also seen that
+the problems like the BDMST and the Min-LST problems are NP complete
+even then it is possible to design a polynomial time algorithm that give us a
+solution that is nearly optimal. For example, we have seen that the BDMST
+algorithm gives us a solution which violates the optimal solution by at most
+19
+2 we have also seen that the algorithm for the Min-LST gives us a solution
+that is nearly optimal.
+As a future work we would like to nd out an algorithm that would help
+us nd a solution to the BDMST problem that would help us nd a solution
+which would violate the optimal solution by 1 instead of 2. Our future work
+will also focus on designing an algorithm that would help us nd a solution
+to the Min-LST, whose solution would be :V2(T)
+V2(T) < 2􀀀 so that our solution
+is even more closer than the optimal solution.
+20
